@@ -277,7 +277,7 @@ class ManageUsersPage extends Component {
                   </div>
 
                   <div className="two column">
-                    {u.id === loggedUser.userLoggedID ? (
+                    {parseInt(u.id) === parseInt(loggedUser.userLoggedID) ? (
                       "Currently Logged AS"
                     ) : (
                       <button
