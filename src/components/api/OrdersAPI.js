@@ -109,16 +109,15 @@ export default class OrdersAPI {
       setTimeout(() => {
         let orders = JSON.parse(localStorage.getItem("orders"));
 
-        console.log(orders);
+        if(orders){
+          orders = orders.filter(n => n.authorID !== id);
 
-        orders = orders.filter(n => n.authorID !== id);
-
-        console.log(orders);
-
-        let jsonOrders = JSON.stringify(orders);
-        localStorage.setItem("orders", jsonOrders);
-
-        resolve();
+          let jsonOrders = JSON.stringify(orders);
+          localStorage.setItem("orders", jsonOrders);
+  
+          resolve();
+        }
+        reject('No orders created');
       });
     });
   }
