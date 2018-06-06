@@ -130,7 +130,6 @@ export default class UsersAPI {
   }
 
   static getLoggedUserInfo() {
-
     return {
       userLoggedID: localStorage.getItem("logged-id"),
       isAdmin: localStorage.getItem("isAdmin")
@@ -160,15 +159,24 @@ export default class UsersAPI {
 
         let toDelete = users.find(u => u.id === id);
 
-        console.log(toDelete.id);
-        OrdersAPI.deleteByAuthorId(toDelete.id).then(() => {
+        let orders = JSON.parse(localStorage.getItem("orders"));
+
+        if (orders) {
+          OrdersAPI.deleteByAuthorId(toDelete.id).then(() => {
+            users = users.filter(u => u.id !== toDelete.id);
+
+            let usersJSON = JSON.stringify(users);
+            localStorage.setItem("users", usersJSON);
+          });
+        } else {
           users = users.filter(u => u.id !== toDelete.id);
 
           let usersJSON = JSON.stringify(users);
           localStorage.setItem("users", usersJSON);
 
-          resolve();
-        });
+        }
+        
+        resolve();
       }, 1500);
     });
   }
